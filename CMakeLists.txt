@@ -33,15 +33,16 @@ file(GLOB_RECURSE PRIVATE_SOURCES
 )
 
 # ---- Library ----
-add_library(spacemouse_driver ${PRIVATE_SOURCES})
+add_library(spacemouse_driver SHARED ${PRIVATE_SOURCES})
 
 target_include_directories(spacemouse_driver
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${magic_enum_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include/magic_enum>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        $<BUILD_INTERFACE:${magic_enum_SOURCE_DIR}/include>
 )
 
 target_link_libraries(spacemouse_driver
@@ -59,11 +60,13 @@ include(GNUInstallDirs)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/spacemouse_driver
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
+install(DIRECTORY ${magic_enum_SOURCE_DIR}/include/magic_enum
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 install(TARGETS spacemouse_driver
     EXPORT spacemouse_driverTargets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 install(EXPORT spacemouse_driverTargets
