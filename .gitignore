@@ -1,0 +1,39 @@
+# Build artifacts
+*.o
+*.obj
+*.a
+*.so*
+*.dylib
+*.dll
+*.exe
+*.out
+
+# Debug / profiling
+*.core
+*.gcda
+*.gcno
+*.gcov
+*.prof*
+*.dSYM/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+install_manifest.txt
+Makefile
+build*/
+_build*/
+
+# Autotools
+/config.log
+/config.status
+/autom4te.cache/
+libtool
+
+# IDE / editor
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

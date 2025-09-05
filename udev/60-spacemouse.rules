@@ -1,0 +1,11 @@
+# SpaceMouse Enterprise
+SUBSYSTEM=="input", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c633", ENV{ID_INPUT}="", ENV{ID_INPUT_MOUSE}="", ENV{ID_INPUT_POINTINGSTICK}=""
+KERNEL=="hidraw*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c633", TAG+="uaccess"
+
+# SpaceMouse Wireless Dongle
+SUBSYSTEM=="input", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c652", ENV{ID_INPUT}="", ENV{ID_INPUT_MOUSE}="", ENV{ID_INPUT_POINTINGSTICK}=""
+KERNEL=="hidraw*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c652", TAG+="uaccess"
+
+# SpaceMouse Wireless USB/BT
+SUBSYSTEM=="input", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c63a", ENV{ID_INPUT}="", ENV{ID_INPUT_MOUSE}="", ENV{ID_INPUT_POINTINGSTICK}=""
+KERNEL=="hidraw*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c63a", TAG+="uaccess"
