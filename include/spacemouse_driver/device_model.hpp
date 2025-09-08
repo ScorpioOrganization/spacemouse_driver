@@ -2,14 +2,17 @@
 
 namespace spacemouse_driver {
 
+/**
+ * @brief Enumeration of supported SpaceMouse device models
+ *
+ * This enum identifies the different SpaceMouse models that the driver can detect
+ * and work with.
+ */
 enum class Model
 {
   Undefined,
   SpaceMouseEnterprise,
   SpaceMouseWireless,
-  SpaceMouseProWireless,
-  SpaceMousePro,
-  SpaceMouseCompact
 };
 
 }  // namespace spacemouse_driver

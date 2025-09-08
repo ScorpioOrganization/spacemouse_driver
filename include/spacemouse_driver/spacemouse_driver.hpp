@@ -5,3 +5,4 @@
 #include "spacemouse_driver/logger.hpp"
 #include "spacemouse_driver/input_types.hpp"
 #include "spacemouse_driver/device_model.hpp"
+#include "spacemouse_driver/connection_state.hpp"

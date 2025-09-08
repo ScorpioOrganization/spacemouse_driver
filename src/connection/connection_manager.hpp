@@ -8,14 +8,9 @@
 
 #include "driver/driver_context.hpp"
 #include "connection/connection_method.hpp"
+#include "spacemouse_driver/connection_state.hpp"
 
 namespace spacemouse_driver {
-
-enum class ConnectionState
-{
-  Disconnected,
-  Connected,
-};
 
 class ConnectionManager {
 public:

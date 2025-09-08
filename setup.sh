@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-#
-# install-udev-rules.sh
-#
-# Must be run with root privileges (sudo)
 
 set -euo pipefail
 
@@ -22,7 +18,7 @@ if [[ ! -f "$SRC_RULES" ]]; then
 fi
 
 echo -e "This script is going to create $GROUP group, add user $USER to it and install udev rules."
-echo -e "It will allow the driver to access Spacemouse devices without root, and disable Linux generic mouse driver interference."
+echo -e "It will allow the driver to access SpaceMouse devices without root, and disable Linux generic mouse driver interference."
 echo "Rules will be copied to $DST_RULES"
 echo -e "\nDo you wish to continue? (Y/n) "
 read -r response

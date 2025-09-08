@@ -10,6 +10,12 @@
 
 namespace spacemouse_driver {
 
+/**
+ * @brief Enumeration of SpaceMouse movement axes
+ *
+ * Represents the six degrees of freedom available on SpaceMouse devices:
+ * three linear axes and three angular axes.
+ */
 enum class Axis
 {
   LinearX,
@@ -21,6 +27,12 @@ enum class Axis
 };
 constexpr size_t AxisCount = magic_enum::enum_count<Axis>();
 
+/**
+ * @brief Enumeration of SpaceMouse buttons
+ *
+ * Represents all possible buttons that can be found on various SpaceMouse models.
+ * Not all buttons are available on all devices.
+ */
 enum class Button
 {
   Button1,
@@ -57,18 +69,15 @@ enum class Button
 };
 constexpr size_t ButtonCount = magic_enum::enum_count<Button>();
 
+/**
+ * @brief Represents input from the SpaceMouse stick
+ *
+ * Contains normalized values for all six degrees of freedom.
+ * Values typically range from -1.0 to 1.0, where 0.0 represents no movement.
+ */
 struct StickInput
 {
-  std::array<double, AxisCount> axis;
-
-  std::string to_string() const {
-    std::string result = "";
-    for (size_t i = 0; i < AxisCount; ++i) {
-      auto axis_name = magic_enum::enum_name(static_cast<Axis>(i));
-      result += std::string(axis_name) + ": " + std::to_string(axis[i]) + " ";
-    }
-    return result;
-  }
+  std::array<double, AxisCount> axis;  // Array of axis values indexed by Axis enum
 
   bool operator==(const StickInput& other) const {
     for (size_t i = 0; i < AxisCount; ++i) {
@@ -84,12 +93,23 @@ struct StickInput
   }
 };
 
+/**
+ * @brief Type alias for button input state
+ *
+ * Represents the pressed state of a button: true = pressed, false = released
+ */
 using ButtonInput = bool;
 
+/**
+ * @brief Complete input state from a SpaceMouse device
+ *
+ * Combines stick input (6DOF movement) with the state of all buttons.
+ * This represents a complete device state at a given moment.
+ */
 struct Input
 {
-  StickInput stick;
-  std::array<ButtonInput, ButtonCount> buttons;
+  StickInput stick;  // Current stick position and orientation
+  std::array<ButtonInput, ButtonCount> buttons;  // State of all buttons indexed by Button enum
 
   bool operator==(const Input& other) const {
     if (stick != other.stick) {
