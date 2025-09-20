@@ -13,7 +13,8 @@
 #include "spacemouse_driver/device_model.hpp"
 #include "types/mapping_types.hpp"
 
-namespace spacemouse_driver {
+namespace spacemouse_driver
+{
 
 struct DeviceInfo
 {
@@ -33,37 +34,41 @@ struct DeviceConfig
   int16_t axis_div;
 
   std::array<AxisMapping, AxisCount> axis_mappings;
-  std::array<std::optional<ButtonMapping>, ButtonCount> button_mappings{ };
+  std::array<std::optional<ButtonMapping>, ButtonCount> button_mappings{};
 
-  AxisMapping get_axis_mapping(Axis axis) const {
+  AxisMapping get_axis_mapping(Axis axis) const
+  {
     return axis_mappings[static_cast<size_t>(axis)];
   }
 
-  std::optional<ButtonMapping> get_button_mapping(Button button) const {
+  std::optional<ButtonMapping> get_button_mapping(Button button) const
+  {
     return button_mappings[static_cast<size_t>(button)];
   }
 
   constexpr DeviceConfig(
     Model m, uint16_t v, uint16_t p, std::optional<int> i, int16_t div,
-    const std::array<AxisMapping, AxisCount>& axes,
-    const std::array<std::optional<ButtonMapping>, ButtonCount>& buttons)
-  : model(m), vid(v), pid(p), interface(i), axis_div(div), axis_mappings(axes), button_mappings(buttons) { }
+    const std::array<AxisMapping, AxisCount> & axes,
+    const std::array<std::optional<ButtonMapping>, ButtonCount> & buttons)
+  : model(m), vid(v), pid(p), interface(i), axis_div(div), axis_mappings(axes), button_mappings(
+      buttons) {}
 
   constexpr DeviceConfig()
   : model(Model::Undefined), vid(0), pid(0), interface(0), axis_div(1),
-    axis_mappings{}, button_mappings{} { }
+    axis_mappings{}, button_mappings{} {}
 };
 
 struct DeviceHandle
 {
-  hid_device* hid_handle;
+  hid_device * hid_handle;
   DeviceConfig config;
   std::string path;
 
-  DeviceHandle(hid_device* hid_dev, const DeviceConfig& conf, const std::string& dev_path)
-  : hid_handle(hid_dev), config(conf), path(dev_path) { }
+  DeviceHandle(hid_device * hid_dev, const DeviceConfig & conf, const std::string & dev_path)
+  : hid_handle(hid_dev), config(conf), path(dev_path) {}
 
-  std::string get_name() const {
+  std::string get_name() const
+  {
     return std::string(magic_enum::enum_name(config.model)) + " (" + path + ")";
   }
 };

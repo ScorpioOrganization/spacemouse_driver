@@ -8,7 +8,8 @@
 
 #include "magic_enum/magic_enum.hpp"
 
-namespace spacemouse_driver {
+namespace spacemouse_driver
+{
 
 /**
  * @brief Enumeration of SpaceMouse movement axes
@@ -79,7 +80,8 @@ struct StickInput
 {
   std::array<double, AxisCount> axis;  // Array of axis values indexed by Axis enum
 
-  bool operator==(const StickInput& other) const {
+  bool operator==(const StickInput & other) const
+  {
     for (size_t i = 0; i < AxisCount; ++i) {
       if (axis[i] != other.axis[i]) {
         return false;
@@ -88,7 +90,8 @@ struct StickInput
     return true;
   }
 
-  bool operator!=(const StickInput& other) const {
+  bool operator!=(const StickInput & other) const
+  {
     return !(*this == other);
   }
 };
@@ -111,7 +114,8 @@ struct Input
   StickInput stick;  // Current stick position and orientation
   std::array<ButtonInput, ButtonCount> buttons;  // State of all buttons indexed by Button enum
 
-  bool operator==(const Input& other) const {
+  bool operator==(const Input & other) const
+  {
     if (stick != other.stick) {
       return false;
     }
@@ -123,7 +127,8 @@ struct Input
     return true;
   }
 
-  bool operator!=(const Input& other) const {
+  bool operator!=(const Input & other) const
+  {
     return !(*this == other);
   }
 };

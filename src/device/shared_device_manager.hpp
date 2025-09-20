@@ -5,19 +5,23 @@
 
 #include "types/device_types.hpp"
 
-namespace spacemouse_driver {
+namespace spacemouse_driver
+{
 
-class SharedDeviceManager {
+class SharedDeviceManager
+{
 public:
   SharedDeviceManager()
-  : _claimed_paths() { }
+  : _claimed_paths() {}
 
-  bool claim_path(const std::string& path) {
+  bool claim_path(const std::string & path)
+  {
     std::lock_guard<std::mutex> lock(_mutex);
     return _claimed_paths.insert(path).second;
   }
 
-  void release_path(const std::string& path) {
+  void release_path(const std::string & path)
+  {
     std::lock_guard<std::mutex> lock(_mutex);
     _claimed_paths.erase(path);
   }

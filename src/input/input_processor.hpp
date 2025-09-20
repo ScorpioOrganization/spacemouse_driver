@@ -12,11 +12,13 @@
 #include "spacemouse_driver/input_types.hpp"
 #include "driver/driver_context.hpp"
 
-namespace spacemouse_driver {
+namespace spacemouse_driver
+{
 
-using DataCallback = std::function<void(const Input&, bool error)>;
+using DataCallback = std::function<void (const Input &, bool error)>;
 
-class InputProcessor {
+class InputProcessor
+{
 public:
   explicit InputProcessor(std::shared_ptr<DriverContext> context);
   ~InputProcessor();
@@ -37,7 +39,7 @@ public:
 
 private:
   std::shared_ptr<DriverContext> _context;
-  std::atomic<bool> _running{ false };
+  std::atomic<bool> _running{false};
   std::thread _process_thread;
 
   // Device and data
@@ -47,7 +49,7 @@ private:
   std::chrono::steady_clock::time_point _last_data_time;
 
   // Config
-  std::atomic<std::chrono::milliseconds> _data_timeout{ std::chrono::milliseconds(1000) };
+  std::atomic<std::chrono::milliseconds> _data_timeout{std::chrono::milliseconds(1000)};
 
   // Callback for new data
   std::mutex _callback_mutex;
@@ -60,7 +62,7 @@ private:
   void process_loop();
 
   // Input parsing
-  Input parse(const uint8_t* data, size_t length, const DeviceConfig& config) const;
+  Input parse(const uint8_t * data, size_t length, const DeviceConfig & config) const;
 };
 
 }  // namespace spacemouse_driver

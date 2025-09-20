@@ -11,11 +11,13 @@
 
 #include "spacemouse_driver/input_types.hpp"
 
-namespace spacemouse_driver {
+namespace spacemouse_driver
+{
 
 class DriverContext;
 
-class CallbackDispatcher {
+class CallbackDispatcher
+{
 public:
   explicit CallbackDispatcher(std::shared_ptr<DriverContext> context);
   ~CallbackDispatcher();
@@ -25,7 +27,7 @@ public:
   void stop();
 
   // Process new input data
-  void process_input(const Input& input);
+  void process_input(const Input & input);
 
   // Callback registration
   void register_stick_callback(std::function<void(StickInput)> callback);
@@ -39,7 +41,7 @@ public:
 
 private:
   std::shared_ptr<DriverContext> _context;
-  std::atomic<bool> _running{ false };
+  std::atomic<bool> _running{false};
   std::thread _dispatch_thread;
 
   // Callback handling
@@ -52,18 +54,18 @@ private:
   Input _current_input;
   Input _prev_input;
   std::condition_variable _input_cv;
-  bool _new_input{ false };
-  bool _zero_state_reported{ false };
+  bool _new_input{false};
+  bool _zero_state_reported{false};
 
   // Config
-  std::atomic<std::chrono::milliseconds> _callback_interval{ std::chrono::milliseconds(20) };
-  std::atomic_bool _instant_callbacks{ false };
+  std::atomic<std::chrono::milliseconds> _callback_interval{std::chrono::milliseconds(20)};
+  std::atomic_bool _instant_callbacks{false};
 
   // Main dispatch loop
   void dispatch_loop();
 
   // Helpers
-  void invoke_stick_callback(const StickInput& input);
+  void invoke_stick_callback(const StickInput & input);
   void invoke_button_callback(Button button, ButtonInput input);
 };
 

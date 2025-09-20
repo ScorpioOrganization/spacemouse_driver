@@ -10,9 +10,11 @@
 #include "connection/connection_method.hpp"
 #include "spacemouse_driver/connection_state.hpp"
 
-namespace spacemouse_driver {
+namespace spacemouse_driver
+{
 
-class ConnectionManager {
+class ConnectionManager
+{
 public:
   ConnectionManager(
     std::shared_ptr<DriverContext> context,
@@ -29,7 +31,9 @@ public:
   void stop();
 
   // Connection state notification
-  void set_state_change_callback(std::function<void(ConnectionState, std::shared_ptr<DeviceHandle>)> callback);
+  void set_state_change_callback(
+    std::function<void(ConnectionState,
+    std::shared_ptr<DeviceHandle>)> callback);
 
   // Config
   void set_connect_retry_interval(std::chrono::milliseconds interval);
@@ -38,19 +42,19 @@ private:
   std::shared_ptr<DriverContext> _context;
   std::shared_ptr<ConnectionMethod> _conn_method;
   std::shared_ptr<DeviceHandle> _device;
-  std::atomic<ConnectionState> _state{ ConnectionState::Disconnected };
+  std::atomic<ConnectionState> _state{ConnectionState::Disconnected};
   std::mutex _mutex;
 
   // Connection management
   bool try_connect();
 
   // Connection thread management
-  std::atomic_bool _running{ false };
+  std::atomic_bool _running{false};
   std::thread _connect_thread;
   void connect_loop();
 
   // Config
-  std::atomic<std::chrono::milliseconds> _connect_retry_interval{ std::chrono::milliseconds(1000) };
+  std::atomic<std::chrono::milliseconds> _connect_retry_interval{std::chrono::milliseconds(1000)};
 
   // Notification callback
   std::function<void(ConnectionState, std::shared_ptr<DeviceHandle>)> _state_change_callback;
