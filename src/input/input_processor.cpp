@@ -7,7 +7,8 @@ namespace spacemouse_driver
 
 InputProcessor::InputProcessor(std::shared_ptr<DriverContext> context)
 : _context(context),
-  _last_data_time(std::chrono::steady_clock::now())
+  _running(false),
+  _data_timeout(std::chrono::milliseconds(1000))
 {
   _context->logger->debug("InputProcessor initialized");
 }
@@ -49,7 +50,6 @@ void InputProcessor::set_device(std::shared_ptr<DeviceHandle> device)
 {
   std::lock_guard<std::mutex> lock(_device_mutex);
   _device = device;
-  _last_data_time = std::chrono::steady_clock::now();
 }
 
 void InputProcessor::clear_device()
@@ -113,8 +113,6 @@ void InputProcessor::process_loop()
       continue;
     }
 
-    _last_data_time = std::chrono::steady_clock::now();
-
     Input curr_input = parse(buf, static_cast<size_t>(res), current_device->config);
     _last_input.write(curr_input);
 
@@ -136,7 +134,7 @@ Input InputProcessor::parse(const uint8_t * data, size_t length, const DeviceCon
 
   // Parse axis data
   for (size_t i = 0; i < AxisCount; ++i) {
-    auto mapping = config.get_axis_mapping(static_cast<Axis>(i));
+    auto mapping = config.get_axis_mapping(magic_enum::enum_value<Axis>(i));
     auto raw_data = mapping.parse(data, length);
     if (!raw_data) {continue;}
     double normalized_value = static_cast<double>(raw_data.value()) / config.axis_div;
@@ -146,7 +144,7 @@ Input InputProcessor::parse(const uint8_t * data, size_t length, const DeviceCon
   // Parse button data
   Input last_input = _last_input.read();
   for (size_t i = 0; i < ButtonCount; ++i) {
-    auto mapping = config.get_button_mapping(static_cast<Button>(i));
+    auto mapping = config.get_button_mapping(magic_enum::enum_value<Button>(i));
     if (!mapping) {
       input.buttons[i] = false;
       continue;

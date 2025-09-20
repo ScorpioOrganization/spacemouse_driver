@@ -6,7 +6,11 @@ namespace spacemouse_driver
 {
 
 CallbackDispatcher::CallbackDispatcher(std::shared_ptr<DriverContext> context)
-: _context(context)
+: _context(context),
+  _running(false),
+  _new_input(false),
+  _zero_state_reported(false),
+  _instant_callbacks(false)
 {
   _context->logger->debug("CallbackDispatcher initialized");
 }
@@ -38,10 +42,6 @@ void CallbackDispatcher::stop()
   }
 
   _running = false;
-  {
-    std::lock_guard<std::mutex> lock(_input_mutex);
-    _new_input = true;
-  }
   _input_cv.notify_all();
 
   if (_dispatch_thread.joinable()) {
@@ -73,7 +73,7 @@ void CallbackDispatcher::register_button_callback(
   std::function<void(ButtonInput)> callback)
 {
   std::lock_guard<std::mutex> lock(_callback_mutex);
-  _button_callbacks[static_cast<size_t>(button)] = callback;
+  _button_callbacks[*magic_enum::enum_index(button)] = callback;
 }
 
 void CallbackDispatcher::delete_stick_callback()
@@ -85,7 +85,7 @@ void CallbackDispatcher::delete_stick_callback()
 void CallbackDispatcher::delete_button_callback(Button button)
 {
   std::lock_guard<std::mutex> lock(_callback_mutex);
-  _button_callbacks[static_cast<size_t>(button)] = nullptr;
+  _button_callbacks[*magic_enum::enum_index(button)] = nullptr;
 }
 
 void CallbackDispatcher::set_callback_interval(std::chrono::milliseconds interval)
@@ -123,7 +123,7 @@ void CallbackDispatcher::dispatch_loop()
 
     // Process button callbacks
     for (size_t i = 0; i < ButtonCount; ++i) {
-      Button button = static_cast<Button>(i);
+      Button button = magic_enum::enum_value<Button>(i);
       if (input_to_process.buttons[i] != _prev_input.buttons[i]) {
         invoke_button_callback(button, input_to_process.buttons[i]);
       }
@@ -162,7 +162,7 @@ void CallbackDispatcher::invoke_button_callback(Button button, ButtonInput input
   std::function<void(ButtonInput)> callback;
   {
     std::lock_guard<std::mutex> lock(_callback_mutex);
-    callback = _button_callbacks[static_cast<size_t>(button)];
+    callback = _button_callbacks[*magic_enum::enum_index(button)];
   }
 
   if (callback) {

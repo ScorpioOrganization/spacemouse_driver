@@ -42,14 +42,14 @@ private:
   std::shared_ptr<DriverContext> _context;
   std::shared_ptr<ConnectionMethod> _conn_method;
   std::shared_ptr<DeviceHandle> _device;
-  std::atomic<ConnectionState> _state{ConnectionState::Disconnected};
+  std::atomic<ConnectionState> _state;
   std::mutex _mutex;
 
   // Connection management
   bool try_connect();
 
   // Connection thread management
-  std::atomic_bool _running{false};
+  std::atomic_bool _running;
   std::thread _connect_thread;
   void connect_loop();
 

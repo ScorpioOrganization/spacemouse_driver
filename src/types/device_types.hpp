@@ -26,7 +26,7 @@ struct DeviceInfo
 
 struct DeviceConfig
 {
-  Model model;
+  std::optional<Model> model;
   uint16_t vid;
   uint16_t pid;
   std::optional<int> interface;
@@ -38,12 +38,12 @@ struct DeviceConfig
 
   AxisMapping get_axis_mapping(Axis axis) const
   {
-    return axis_mappings[static_cast<size_t>(axis)];
+    return axis_mappings[*magic_enum::enum_index(axis)];
   }
 
   std::optional<ButtonMapping> get_button_mapping(Button button) const
   {
-    return button_mappings[static_cast<size_t>(button)];
+    return button_mappings[*magic_enum::enum_index(button)];
   }
 
   constexpr DeviceConfig(
@@ -54,7 +54,7 @@ struct DeviceConfig
       buttons) {}
 
   constexpr DeviceConfig()
-  : model(Model::Undefined), vid(0), pid(0), interface(0), axis_div(1),
+  : model(std::nullopt), vid(0), pid(0), interface(0), axis_div(1),
     axis_mappings{}, button_mappings{} {}
 };
 
@@ -69,7 +69,7 @@ struct DeviceHandle
 
   std::string get_name() const
   {
-    return std::string(magic_enum::enum_name(config.model)) + " (" + path + ")";
+    return std::string(magic_enum::enum_name(config.model.value())) + " (" + path + ")";
   }
 };
 

@@ -11,7 +11,6 @@ namespace spacemouse_driver
  */
 enum class Model
 {
-  Undefined,
   SpaceMouseEnterprise,
   SpaceMouseWireless,
 };

@@ -130,7 +130,7 @@ public:
 
 private:
   std::shared_ptr<DriverContext> _context;
-  std::atomic<bool> _running{false};
+  std::atomic<bool> _running;
 
   // Component modules
   std::unique_ptr<ConnectionManager> _connection_manager;

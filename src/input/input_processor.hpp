@@ -39,17 +39,16 @@ public:
 
 private:
   std::shared_ptr<DriverContext> _context;
-  std::atomic<bool> _running{false};
+  std::atomic<bool> _running;
   std::thread _process_thread;
 
   // Device and data
   std::mutex _device_mutex;
   std::shared_ptr<DeviceHandle> _device;
   DoubleBuffer<Input> _last_input;
-  std::chrono::steady_clock::time_point _last_data_time;
 
   // Config
-  std::atomic<std::chrono::milliseconds> _data_timeout{std::chrono::milliseconds(1000)};
+  std::atomic<std::chrono::milliseconds> _data_timeout;
 
   // Callback for new data
   std::mutex _callback_mutex;

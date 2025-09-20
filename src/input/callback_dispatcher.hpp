@@ -41,7 +41,7 @@ public:
 
 private:
   std::shared_ptr<DriverContext> _context;
-  std::atomic<bool> _running{false};
+  std::atomic<bool> _running;
   std::thread _dispatch_thread;
 
   // Callback handling
@@ -54,12 +54,12 @@ private:
   Input _current_input;
   Input _prev_input;
   std::condition_variable _input_cv;
-  bool _new_input{false};
-  bool _zero_state_reported{false};
+  bool _new_input;
+  bool _zero_state_reported;
 
   // Config
   std::atomic<std::chrono::milliseconds> _callback_interval{std::chrono::milliseconds(20)};
-  std::atomic_bool _instant_callbacks{false};
+  std::atomic_bool _instant_callbacks;
 
   // Main dispatch loop
   void dispatch_loop();

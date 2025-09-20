@@ -23,8 +23,8 @@ public:
   virtual ~HidBackend();
   virtual std::vector<DeviceInfo> enumerate();
   virtual std::shared_ptr<DeviceHandle> open(const std::string & path, uint16_t vid, uint16_t pid);
-  virtual int read(std::shared_ptr<DeviceHandle> handle, uint8_t * buf, size_t len);
-  virtual void close(std::shared_ptr<DeviceHandle> handle) noexcept;
+  virtual int read(std::shared_ptr<DeviceHandle>& handle, uint8_t * buf, size_t len);
+  virtual void close(std::shared_ptr<DeviceHandle>& handle) noexcept;
 };
 
 }  // namespace spacemouse_driver

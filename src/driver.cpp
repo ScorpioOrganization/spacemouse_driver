@@ -11,7 +11,8 @@ namespace spacemouse_driver
 Driver::Driver(
   std::shared_ptr<DriverContext> context,
   std::shared_ptr<ConnectionMethod> conn_method)
-: _context(context)
+: _context(context),
+  _running(false)
 {
   _connection_manager = std::make_unique<ConnectionManager>(context, conn_method);
   _input_processor = std::make_unique<InputProcessor>(context);

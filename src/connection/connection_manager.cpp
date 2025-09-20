@@ -10,7 +10,9 @@ ConnectionManager::ConnectionManager(
   std::shared_ptr<DriverContext> context,
   std::shared_ptr<ConnectionMethod> conn_method)
 : _context(context),
-  _conn_method(conn_method)
+  _conn_method(conn_method),
+  _state(ConnectionState::Disconnected),
+  _running(false)
 {
   _context->logger->debug("ConnectionManager initialized");
 }

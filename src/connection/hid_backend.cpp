@@ -51,17 +51,18 @@ std::shared_ptr<DeviceHandle> HidBackend::open(const std::string & path, uint16_
   auto config = DeviceRegistry::get(vid, pid);
   if (!config) {
     hid_close(hid_device);
+    _shared_device_manager->release_path(path);
     return nullptr;
   }
   return std::make_shared<DeviceHandle>(hid_device, *config, path);
 }
 
-int HidBackend::read(std::shared_ptr<DeviceHandle> handle, uint8_t * buf, size_t len)
+int HidBackend::read(std::shared_ptr<DeviceHandle>& handle, uint8_t * buf, size_t len)
 {
   return hid_read(handle->hid_handle, buf, len);
 }
 
-void HidBackend::close(std::shared_ptr<DeviceHandle> handle) noexcept
+void HidBackend::close(std::shared_ptr<DeviceHandle>& handle) noexcept
 {
   if (handle->hid_handle) {
     hid_close(handle->hid_handle);
