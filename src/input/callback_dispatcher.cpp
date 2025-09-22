@@ -2,26 +2,22 @@
 
 #include "driver/driver_context.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 CallbackDispatcher::CallbackDispatcher(std::shared_ptr<DriverContext> context)
 : _context(context),
   _running(false),
   _new_input(false),
   _zero_state_reported(false),
-  _instant_callbacks(false)
-{
+  _instant_callbacks(false) {
   _context->logger->debug("CallbackDispatcher initialized");
 }
 
-CallbackDispatcher::~CallbackDispatcher()
-{
+CallbackDispatcher::~CallbackDispatcher() {
   stop();
 }
 
-void CallbackDispatcher::start()
-{
+void CallbackDispatcher::start() {
   if (_running) {
     _context->logger->warning("CallbackDispatcher is already running");
     return;
@@ -35,8 +31,7 @@ void CallbackDispatcher::start()
   _context->logger->debug("CallbackDispatcher started");
 }
 
-void CallbackDispatcher::stop()
-{
+void CallbackDispatcher::stop() {
   if (!_running) {
     return;
   }
@@ -50,8 +45,7 @@ void CallbackDispatcher::stop()
   _context->logger->debug("CallbackDispatcher stopped");
 }
 
-void CallbackDispatcher::process_input(const Input & input)
-{
+void CallbackDispatcher::process_input(const Input& input) {
   {
     std::lock_guard<std::mutex> lock(_input_mutex);
     _current_input = input;
@@ -62,44 +56,37 @@ void CallbackDispatcher::process_input(const Input & input)
   }
 }
 
-void CallbackDispatcher::register_stick_callback(std::function<void(StickInput)> callback)
-{
+void CallbackDispatcher::register_stick_callback(std::function<void(StickInput)> callback) {
   std::lock_guard<std::mutex> lock(_callback_mutex);
   _stick_callback = callback;
 }
 
 void CallbackDispatcher::register_button_callback(
   Button button,
-  std::function<void(ButtonInput)> callback)
-{
+  std::function<void(ButtonInput)> callback) {
   std::lock_guard<std::mutex> lock(_callback_mutex);
   _button_callbacks[*magic_enum::enum_index(button)] = callback;
 }
 
-void CallbackDispatcher::delete_stick_callback()
-{
+void CallbackDispatcher::delete_stick_callback() {
   std::lock_guard<std::mutex> lock(_callback_mutex);
   _stick_callback = nullptr;
 }
 
-void CallbackDispatcher::delete_button_callback(Button button)
-{
+void CallbackDispatcher::delete_button_callback(Button button) {
   std::lock_guard<std::mutex> lock(_callback_mutex);
   _button_callbacks[*magic_enum::enum_index(button)] = nullptr;
 }
 
-void CallbackDispatcher::set_callback_interval(std::chrono::milliseconds interval)
-{
+void CallbackDispatcher::set_callback_interval(std::chrono::milliseconds interval) {
   _callback_interval = interval;
 }
 
-void CallbackDispatcher::set_instant_callbacks(bool enabled)
-{
+void CallbackDispatcher::set_instant_callbacks(bool enabled) {
   _instant_callbacks = enabled;
 }
 
-void CallbackDispatcher::dispatch_loop()
-{
+void CallbackDispatcher::dispatch_loop() {
   while (_running) {
     Input input_to_process;
 
@@ -111,7 +98,7 @@ void CallbackDispatcher::dispatch_loop()
           return !_running || (_new_input && _instant_callbacks);
         });
 
-      if (!_running) {break;}
+      if (!_running) { break; }
 
       if (_new_input) {
         input_to_process = _current_input;
@@ -130,9 +117,9 @@ void CallbackDispatcher::dispatch_loop()
     }
 
     // Process stick callbacks
-    if (input_to_process.stick == StickInput{}) {
+    if (input_to_process.stick == StickInput{ }) {
       if (!_zero_state_reported) {
-        invoke_stick_callback(StickInput{});
+        invoke_stick_callback(StickInput{ });
         _zero_state_reported = true;
       }
     } else {
@@ -144,8 +131,7 @@ void CallbackDispatcher::dispatch_loop()
   }
 }
 
-void CallbackDispatcher::invoke_stick_callback(const StickInput & input)
-{
+void CallbackDispatcher::invoke_stick_callback(const StickInput& input) {
   std::function<void(StickInput)> callback;
   {
     std::lock_guard<std::mutex> lock(_callback_mutex);
@@ -157,8 +143,7 @@ void CallbackDispatcher::invoke_stick_callback(const StickInput & input)
   }
 }
 
-void CallbackDispatcher::invoke_button_callback(Button button, ButtonInput input)
-{
+void CallbackDispatcher::invoke_button_callback(Button button, ButtonInput input) {
   std::function<void(ButtonInput)> callback;
   {
     std::lock_guard<std::mutex> lock(_callback_mutex);

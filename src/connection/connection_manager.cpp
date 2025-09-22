@@ -3,8 +3,7 @@
 #include <future>
 #include <thread>
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 ConnectionManager::ConnectionManager(
   std::shared_ptr<DriverContext> context,
@@ -12,21 +11,18 @@ ConnectionManager::ConnectionManager(
 : _context(context),
   _conn_method(conn_method),
   _state(ConnectionState::Disconnected),
-  _running(false)
-{
+  _running(false) {
   _context->logger->debug("ConnectionManager initialized");
 }
 
-ConnectionManager::~ConnectionManager()
-{
+ConnectionManager::~ConnectionManager() {
   stop();
   if (_state == ConnectionState::Connected) {
     disconnect();
   }
 }
 
-bool ConnectionManager::try_connect()
-{
+bool ConnectionManager::try_connect() {
   if (_state == ConnectionState::Connected) {
     _context->logger->warning("Already connected to a device");
     return true;
@@ -47,8 +43,7 @@ bool ConnectionManager::try_connect()
   return true;
 }
 
-void ConnectionManager::start()
-{
+void ConnectionManager::start() {
   if (_running) {
     _context->logger->warning("ConnectionManager is already running");
     return;
@@ -58,8 +53,7 @@ void ConnectionManager::start()
   _context->logger->debug("ConnectionManager started");
 }
 
-void ConnectionManager::stop()
-{
+void ConnectionManager::stop() {
   if (!_running) {
     return;
   }
@@ -71,8 +65,7 @@ void ConnectionManager::stop()
   _context->logger->debug("ConnectionManager stopped");
 }
 
-void ConnectionManager::connect_loop()
-{
+void ConnectionManager::connect_loop() {
   while (_running) {
     std::this_thread::sleep_for(_connect_retry_interval.load());
     if (_state == ConnectionState::Disconnected) {
@@ -81,8 +74,7 @@ void ConnectionManager::connect_loop()
   }
 }
 
-void ConnectionManager::disconnect()
-{
+void ConnectionManager::disconnect() {
   if (_state != ConnectionState::Connected) {
     _context->logger->warning("Not connected to any device");
     return;
@@ -99,31 +91,26 @@ void ConnectionManager::disconnect()
   change_state(ConnectionState::Disconnected);
 }
 
-ConnectionState ConnectionManager::get_state() const
-{
+ConnectionState ConnectionManager::get_state() const {
   return _state;
 }
 
-std::shared_ptr<DeviceHandle> ConnectionManager::get_device()
-{
+std::shared_ptr<DeviceHandle> ConnectionManager::get_device() {
   std::lock_guard<std::mutex> lock(_mutex);
   return _device;
 }
 
 void ConnectionManager::set_state_change_callback(
-  std::function<void(ConnectionState, std::shared_ptr<DeviceHandle>)> callback)
-{
+  std::function<void(ConnectionState, std::shared_ptr<DeviceHandle>)> callback) {
   std::lock_guard<std::mutex> lock(_mutex);
   _state_change_callback = callback;
 }
 
-void ConnectionManager::set_connect_retry_interval(std::chrono::milliseconds interval)
-{
+void ConnectionManager::set_connect_retry_interval(std::chrono::milliseconds interval) {
   _connect_retry_interval = interval;
 }
 
-void ConnectionManager::change_state(ConnectionState new_state)
-{
+void ConnectionManager::change_state(ConnectionState new_state) {
   if (_state == new_state) {
     return;
   }
@@ -131,8 +118,7 @@ void ConnectionManager::change_state(ConnectionState new_state)
   notify_state_change();
 }
 
-void ConnectionManager::notify_state_change()
-{
+void ConnectionManager::notify_state_change() {
   std::shared_ptr<DeviceHandle> device_copy;
   std::function<void(ConnectionState, std::shared_ptr<DeviceHandle>)> callback_copy;
   {

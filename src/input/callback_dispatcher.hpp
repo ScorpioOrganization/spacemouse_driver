@@ -11,8 +11,7 @@
 
 #include "spacemouse_driver/input_types.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 class DriverContext;
 
@@ -27,7 +26,7 @@ public:
   void stop();
 
   // Process new input data
-  void process_input(const Input & input);
+  void process_input(const Input& input);
 
   // Callback registration
   void register_stick_callback(std::function<void(StickInput)> callback);
@@ -58,14 +57,14 @@ private:
   bool _zero_state_reported;
 
   // Config
-  std::atomic<std::chrono::milliseconds> _callback_interval{std::chrono::milliseconds(20)};
+  std::atomic<std::chrono::milliseconds> _callback_interval{ std::chrono::milliseconds(20) };
   std::atomic_bool _instant_callbacks;
 
   // Main dispatch loop
   void dispatch_loop();
 
   // Helpers
-  void invoke_stick_callback(const StickInput & input);
+  void invoke_stick_callback(const StickInput& input);
   void invoke_button_callback(Button button, ButtonInput input);
 };
 

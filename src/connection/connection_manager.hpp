@@ -10,8 +10,7 @@
 #include "connection/connection_method.hpp"
 #include "spacemouse_driver/connection_state.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 class ConnectionManager
 {
@@ -54,7 +53,7 @@ private:
   void connect_loop();
 
   // Config
-  std::atomic<std::chrono::milliseconds> _connect_retry_interval{std::chrono::milliseconds(1000)};
+  std::atomic<std::chrono::milliseconds> _connect_retry_interval{ std::chrono::milliseconds(1000) };
 
   // Notification callback
   std::function<void(ConnectionState, std::shared_ptr<DeviceHandle>)> _state_change_callback;

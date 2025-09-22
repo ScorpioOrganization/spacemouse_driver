@@ -2,24 +2,20 @@
 
 #include "driver/driver_context.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 InputProcessor::InputProcessor(std::shared_ptr<DriverContext> context)
 : _context(context),
   _running(false),
-  _data_timeout(std::chrono::milliseconds(1000))
-{
+  _data_timeout(std::chrono::milliseconds(1000)) {
   _context->logger->debug("InputProcessor initialized");
 }
 
-InputProcessor::~InputProcessor()
-{
+InputProcessor::~InputProcessor() {
   stop();
 }
 
-void InputProcessor::start()
-{
+void InputProcessor::start() {
   if (_running) {
     _context->logger->warning("InputProcessor is already running");
     return;
@@ -33,8 +29,7 @@ void InputProcessor::start()
   _context->logger->debug("InputProcessor started");
 }
 
-void InputProcessor::stop()
-{
+void InputProcessor::stop() {
   if (!_running) {
     return;
   }
@@ -46,32 +41,27 @@ void InputProcessor::stop()
   _context->logger->debug("InputProcessor stopped");
 }
 
-void InputProcessor::set_device(std::shared_ptr<DeviceHandle> device)
-{
+void InputProcessor::set_device(std::shared_ptr<DeviceHandle> device) {
   std::lock_guard<std::mutex> lock(_device_mutex);
   _device = device;
 }
 
-void InputProcessor::clear_device()
-{
+void InputProcessor::clear_device() {
   std::lock_guard<std::mutex> lock(_device_mutex);
   _device = nullptr;
-  _last_input.write(Input{});
+  _last_input.write(Input{ });
 }
 
-Input InputProcessor::get_latest_input() const
-{
+Input InputProcessor::get_latest_input() const {
   return _last_input.read();
 }
 
-void InputProcessor::set_data_callback(DataCallback callback)
-{
+void InputProcessor::set_data_callback(DataCallback callback) {
   std::lock_guard<std::mutex> lock(_callback_mutex);
   _data_callback = callback;
 }
 
-void InputProcessor::process_loop()
-{
+void InputProcessor::process_loop() {
   uint8_t buf[BUFFER_SIZE];
 
   while (_running) {
@@ -128,15 +118,14 @@ void InputProcessor::process_loop()
   }
 }
 
-Input InputProcessor::parse(const uint8_t * data, size_t length, const DeviceConfig & config) const
-{
+Input InputProcessor::parse(const uint8_t* data, size_t length, const DeviceConfig& config) const {
   Input input;
 
   // Parse axis data
   for (size_t i = 0; i < AxisCount; ++i) {
     auto mapping = config.get_axis_mapping(magic_enum::enum_value<Axis>(i));
     auto raw_data = mapping.parse(data, length);
-    if (!raw_data) {continue;}
+    if (!raw_data) { continue; }
     double normalized_value = static_cast<double>(raw_data.value()) / config.axis_div;
     input.stick.axis[i] = normalized_value;
   }
@@ -150,7 +139,7 @@ Input InputProcessor::parse(const uint8_t * data, size_t length, const DeviceCon
       continue;
     }
     auto is_pressed = std::visit(
-      [&](const auto & mapping) {
+      [&](const auto& mapping) {
         return mapping.parse(data, length);
       }, *mapping);
 

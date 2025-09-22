@@ -8,8 +8,7 @@
 #include "spacemouse_driver/input_types.hpp"
 #include "spacemouse_driver/connection_state.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 class ConnectionManager;
 class InputProcessor;
@@ -138,7 +137,7 @@ private:
   std::unique_ptr<CallbackDispatcher> _callback_dispatcher;
 
   void on_connection_state_change(ConnectionState state, std::shared_ptr<DeviceHandle> device);
-  void on_new_input(const Input & input, bool error);
+  void on_new_input(const Input& input, bool error);
 };
 
 }  // namespace spacemouse_driver

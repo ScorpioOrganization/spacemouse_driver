@@ -12,10 +12,9 @@
 #include "spacemouse_driver/input_types.hpp"
 #include "driver/driver_context.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
-using DataCallback = std::function<void (const Input &, bool error)>;
+using DataCallback = std::function<void (const Input&, bool error)>;
 
 class InputProcessor
 {
@@ -61,7 +60,7 @@ private:
   void process_loop();
 
   // Input parsing
-  Input parse(const uint8_t * data, size_t length, const DeviceConfig & config) const;
+  Input parse(const uint8_t* data, size_t length, const DeviceConfig& config) const;
 };
 
 }  // namespace spacemouse_driver

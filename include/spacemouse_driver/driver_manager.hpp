@@ -6,8 +6,7 @@
 
 #include "spacemouse_driver/logger.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 class SharedDeviceManager;
 class Driver;
@@ -78,7 +77,7 @@ public:
    * @param model_list List of device models to search for
    * @return Shared pointer to the created driver
    */
-  std::shared_ptr<Driver> create_driver(const std::vector<Model> & model_list);
+  std::shared_ptr<Driver> create_driver(const std::vector<Model>& model_list);
 
   /**
    * @brief Creates a driver for a specific device model
@@ -98,13 +97,13 @@ public:
    * @param device_path System path to the device
    * @return Shared pointer to the created driver
    */
-  std::shared_ptr<Driver> create_driver(const std::string & device_path);
+  std::shared_ptr<Driver> create_driver(const std::string& device_path);
 
 private:
   std::shared_ptr<DriverContext> _context;
   std::vector<std::shared_ptr<Driver>> _drivers;
 
-  std::shared_ptr<Driver> make_driver(const std::shared_ptr<ConnectionMethod> & conn_method);
+  std::shared_ptr<Driver> make_driver(const std::shared_ptr<ConnectionMethod>& conn_method);
 };
 
 }  // namespace spacemouse_driver

@@ -10,8 +10,7 @@
 #include "types/device_types.hpp"
 #include "driver/driver_context.hpp"
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 class ConnectionMethod
 {
@@ -23,7 +22,7 @@ public:
 class ModelListConnectionMethod : public ConnectionMethod
 {
 public:
-  explicit ModelListConnectionMethod(const std::vector<Model> & model_list);
+  explicit ModelListConnectionMethod(const std::vector<Model>& model_list);
   std::shared_ptr<DeviceHandle> connect(std::shared_ptr<DriverContext> context) override;
 
 private:
@@ -33,7 +32,7 @@ private:
 class PathConnectionMethod : public ConnectionMethod
 {
 public:
-  explicit PathConnectionMethod(const std::string & path);
+  explicit PathConnectionMethod(const std::string& path);
   std::shared_ptr<DeviceHandle> connect(std::shared_ptr<DriverContext> context) override;
 
 private:

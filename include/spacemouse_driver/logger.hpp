@@ -8,8 +8,7 @@
 #include <fstream>
 #include <mutex>
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
 /**
  * @brief Enumeration of logging levels
@@ -47,9 +46,9 @@ public:
    *
    * @param level New minimum logging level
    */
-  void set_log_level(LogLevel level) {_log_level = level;}
+  void set_log_level(LogLevel level) { _log_level = level; }
 
-  LogLevel get_log_level() const {return _log_level;}
+  LogLevel get_log_level() const { return _log_level; }
 
   /**
    * @brief Logs a message with specified level
@@ -57,28 +56,28 @@ public:
    * @param message Message to log
    * @param level Severity level of the message
    */
-  virtual void log(const std::string & message, LogLevel level = LogLevel::Info) = 0;
+  virtual void log(const std::string& message, LogLevel level = LogLevel::Info) = 0;
 
   /**
    * @brief Logs a warning message
    *
    * @param message Warning message to log
    */
-  virtual void warning(const std::string & message) = 0;
+  virtual void warning(const std::string& message) = 0;
 
   /**
    * @brief Logs an error message
    *
    * @param message Error message to log
    */
-  virtual void error(const std::string & message) = 0;
+  virtual void error(const std::string& message) = 0;
 
   /**
    * @brief Logs a debug message
    *
    * @param message Debug message to log
    */
-  virtual void debug(const std::string & message) = 0;
+  virtual void debug(const std::string& message) = 0;
 };
 
 /**
@@ -97,8 +96,7 @@ public:
    * @param message Message to log
    * @param level Severity level of the message
    */
-  void log(const std::string & message, LogLevel level = LogLevel::Info) override
-  {
+  void log(const std::string& message, LogLevel level = LogLevel::Info) override {
     std::lock_guard<std::mutex> lock(_log_mutex);
     if (level <= _log_level) {
       switch (level) {
@@ -118,18 +116,15 @@ public:
     }
   }
 
-  void warning(const std::string & message) override
-  {
+  void warning(const std::string& message) override {
     log(message, LogLevel::Warning);
   }
 
-  void error(const std::string & message) override
-  {
+  void error(const std::string& message) override {
     log(message, LogLevel::Error);
   }
 
-  void debug(const std::string & message) override
-  {
+  void debug(const std::string& message) override {
     log(message, LogLevel::Debug);
   }
 };

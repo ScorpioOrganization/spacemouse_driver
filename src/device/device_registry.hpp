@@ -5,20 +5,18 @@
 
 #include "types/device_types.hpp"
 
-#define BUTTON_MAPPINGS(...) std::array<std::optional<ButtonMapping>, ButtonCount>{__VA_ARGS__}
-#define AXIS_MAPPINGS(...) std::array<AxisMapping, AxisCount>{__VA_ARGS__}
+#define BUTTON_MAPPINGS(...) std::array<std::optional<ButtonMapping>, ButtonCount>{ __VA_ARGS__ }
+#define AXIS_MAPPINGS(...) std::array<AxisMapping, AxisCount>{ __VA_ARGS__ }
 
-#define AXIS(ax, low, high, ch, inv) AxisMapping{ax, low, high, ch, inv}
-#define BYTE_CODE(btn, ch, code) ByteCodeMapping{btn, ch, code}
-#define BIT_MASK(btn, ch, byte_idx, bit_idx) BitMaskMapping{btn, ch, byte_idx, bit_idx}
+#define AXIS(ax, low, high, ch, inv) AxisMapping{ ax, low, high, ch, inv }
+#define BYTE_CODE(btn, ch, code) ByteCodeMapping{ btn, ch, code }
+#define BIT_MASK(btn, ch, byte_idx, bit_idx) BitMaskMapping{ btn, ch, byte_idx, bit_idx }
 
 #define ANY_INTERFACE std::nullopt
 
-namespace spacemouse_driver
-{
+namespace spacemouse_driver {
 
-namespace DeviceRegistry
-{
+namespace DeviceRegistry {
 
 constexpr auto WIRELESS_AXIS = AXIS_MAPPINGS(
   AXIS(Axis::LinearX, 0x01, 1, 2, false),
@@ -102,9 +100,8 @@ inline constexpr auto DEVICES = std::array{
   )
 };
 
-inline constexpr std::optional<DeviceConfig> get(uint16_t vid, uint16_t pid)
-{
-  for (const auto & device : DEVICES) {
+inline constexpr std::optional<DeviceConfig> get(uint16_t vid, uint16_t pid) {
+  for (const auto& device : DEVICES) {
     if (device.vid == vid && device.pid == pid) {
       return device;
     }
@@ -112,9 +109,8 @@ inline constexpr std::optional<DeviceConfig> get(uint16_t vid, uint16_t pid)
   return std::nullopt;
 }
 
-inline constexpr bool is_supported(Model model)
-{
-  for (const auto & device : DEVICES) {
+inline constexpr bool is_supported(Model model) {
+  for (const auto& device : DEVICES) {
     if (device.model == model) {
       return true;
     }
