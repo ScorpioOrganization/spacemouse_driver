@@ -9,3 +9,4 @@ KERNEL=="hidraw*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c652", MODE="0660
 # SpaceMouse Wireless USB/BT
 SUBSYSTEM=="input", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c63a", ENV{ID_INPUT}="", ENV{ID_INPUT_MOUSE}="", ENV{ID_INPUT_POINTINGSTICK}=""
 KERNEL=="hidraw*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c63a", MODE="0660", GROUP="hidraw"
+KERNEL=="hidraw*", KERNELS=="0005:256F:C63A.*", MODE="0660", GROUP="hidraw"
