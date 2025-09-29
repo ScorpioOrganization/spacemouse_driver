@@ -102,7 +102,7 @@ ConnectionState Driver::get_connection_state() const {
   return _connection_manager->get_state();
 }
 
-Model Driver::get_connected_model() const {
+std::optional<Model> Driver::get_connected_model() const {
   return _connection_manager->get_connected_model();
 }
 

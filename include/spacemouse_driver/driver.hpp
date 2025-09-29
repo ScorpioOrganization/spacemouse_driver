@@ -133,7 +133,7 @@ public:
    *
    * @return Model of the connected SpaceMouse device
    */
-  Model get_connected_model() const;
+  std::optional<Model> get_connected_model() const;
 
 private:
   std::shared_ptr<DriverContext> _context;

@@ -95,12 +95,12 @@ ConnectionState ConnectionManager::get_state() const {
   return _state;
 }
 
-Model ConnectionManager::get_connected_model() const {
+std::optional<Model> ConnectionManager::get_connected_model() const {
   std::lock_guard<std::mutex> lock(_mutex);
   if (_device) {
-    return _device->config.model.value();
+    return _device->config.model;
   }
-  throw std::runtime_error("No device connected");
+  return std::nullopt;
 }
 
 std::shared_ptr<DeviceHandle> ConnectionManager::get_device() const {

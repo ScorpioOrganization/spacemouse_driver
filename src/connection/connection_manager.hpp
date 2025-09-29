@@ -23,7 +23,7 @@ public:
   // Connection management
   void disconnect();
   ConnectionState get_state() const;
-  Model get_connected_model() const;
+  std::optional<Model> get_connected_model() const;
   std::shared_ptr<DeviceHandle> get_device() const;
 
   // Connection thread management
