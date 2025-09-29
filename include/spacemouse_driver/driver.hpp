@@ -7,6 +7,7 @@
 
 #include "spacemouse_driver/input_types.hpp"
 #include "spacemouse_driver/connection_state.hpp"
+#include "spacemouse_driver/device_model.hpp"
 
 namespace spacemouse_driver {
 
@@ -126,6 +127,13 @@ public:
    * @return Current state of the device connection
    */
   ConnectionState get_connection_state() const;
+
+  /**
+   * @brief Gets the model of the currently connected device
+   *
+   * @return Model of the connected SpaceMouse device
+   */
+  Model get_connected_model() const;
 
 private:
   std::shared_ptr<DriverContext> _context;

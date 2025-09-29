@@ -102,6 +102,10 @@ ConnectionState Driver::get_connection_state() const {
   return _connection_manager->get_state();
 }
 
+Model Driver::get_connected_model() const {
+  return _connection_manager->get_connected_model();
+}
+
 void Driver::on_connection_state_change(ConnectionState state, std::shared_ptr<DeviceHandle> device) {
   if (state == ConnectionState::Connected) {
     _input_processor->set_device(device);

@@ -23,7 +23,8 @@ public:
   // Connection management
   void disconnect();
   ConnectionState get_state() const;
-  std::shared_ptr<DeviceHandle> get_device();
+  Model get_connected_model() const;
+  std::shared_ptr<DeviceHandle> get_device() const;
 
   // Connection thread management
   void start();
@@ -42,7 +43,7 @@ private:
   std::shared_ptr<ConnectionMethod> _conn_method;
   std::shared_ptr<DeviceHandle> _device;
   std::atomic<ConnectionState> _state;
-  std::mutex _mutex;
+  mutable std::mutex _mutex;
 
   // Connection management
   bool try_connect();
