@@ -135,3 +135,8 @@ target_link_libraries(your_target spacemouse_driver)
 ## 📚 API Documentation
 
 You can find API documentation in form of Doxygen comments within the public headers.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 (GPLv3) — see the [LICENCE](LICENCE) file for details.
+
