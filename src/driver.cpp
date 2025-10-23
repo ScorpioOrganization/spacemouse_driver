@@ -76,10 +76,7 @@ void Driver::stop() {
 
   _input_processor->stop();
   _callback_dispatcher->stop();
-
-  if (_connection_manager->get_state() == ConnectionState::Connected) {
-    _connection_manager->disconnect();
-  }
+  _connection_manager->stop();
 
   _context->logger->log("Driver stopped");
 }
