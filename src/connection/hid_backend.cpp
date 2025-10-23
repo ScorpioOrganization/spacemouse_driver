@@ -71,7 +71,7 @@ std::shared_ptr<DeviceHandle> HidBackend::open(const std::string& path, uint16_t
 }
 
 int HidBackend::read(std::shared_ptr<DeviceHandle>& handle, uint8_t* buf, size_t len) {
-  return hid_read(handle->hid_handle, buf, len);
+  return hid_read_timeout(handle->hid_handle, buf, len, 100);
 }
 
 void HidBackend::close(std::shared_ptr<DeviceHandle>& handle) noexcept{

@@ -80,6 +80,10 @@ void ConnectionManager::stop() {
     _connect_thread.join();
   }
 
+  if( _state == ConnectionState::Connected) {
+    disconnect();
+  }
+
   _context->logger->debug("ConnectionManager stopped");
 }
 
